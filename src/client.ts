@@ -1,6 +1,13 @@
 import { authenticate, AuthResult } from "./auth.js";
 import { Session } from "./session.js";
-import { BatteryStatus, Device, DeviceLocation, LostModeOptions } from "./types.js";
+import {
+  BatteryStatus,
+  Device,
+  DeviceCapabilities,
+  DeviceLocation,
+  LostModeOptions,
+  Owner,
+} from "./types.js";
 
 const USER_AGENT =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:103.0) Gecko/20100101 Firefox/103.0";
@@ -36,6 +43,11 @@ export class FindMy {
     return new FindMy(await authenticate(email, password));
   }
 
+  /** The Apple Account holder (name, Apple ID, email, country). */
+  get owner(): Owner {
+    return this.auth.owner;
+  }
+
   /** Lists all devices in the account with their latest known locations. */
   async devices(): Promise<Device[]> {
     // First call bootstraps the Find My session (initClient); later calls refresh.
@@ -58,7 +70,8 @@ export class FindMy {
 
     const data = await this.fmip(this.serverContext ? "refreshClient" : "initClient", body);
     this.serverContext = data.serverContext ?? this.serverContext;
-    return (data.content ?? []).map(toDevice);
+    const members = (data.userInfo?.membersInfo ?? {}) as Record<string, any>;
+    return (data.content ?? []).map((raw: any) => toDevice(raw, members, this.auth.owner.name));
   }
 
   /**
@@ -146,17 +159,26 @@ export class FindMy {
   }
 }
 
-function toDevice(raw: any): Device {
+function toDevice(raw: any, members: Record<string, any>, accountOwnerName: string): Device {
+  const member = raw.prsId != null ? members[String(raw.prsId)] : undefined;
+  const memberName = member ? `${member.firstName ?? ""} ${member.lastName ?? ""}`.trim() : "";
+
   return {
     id: raw.id,
     name: raw.name,
     deviceModel: raw.deviceDisplayName ?? raw.deviceModel ?? "Unknown",
     rawDeviceModel: raw.rawDeviceModel ?? "",
+    deviceClass: raw.deviceClass ?? "Unknown",
+    ownerName: memberName || accountOwnerName,
     batteryLevel: typeof raw.batteryLevel === "number" ? raw.batteryLevel : null,
     batteryStatus: (raw.batteryStatus as BatteryStatus) ?? "Unknown",
+    lowPowerMode: Boolean(raw.lowPowerMode),
+    activationLocked: Boolean(raw.activationLocked),
     location: toLocation(raw.location),
+    locationEnabled: Boolean(raw.locationEnabled),
     isLocating: Boolean(raw.isLocating),
     lostModeEnabled: Boolean(raw.lostModeEnabled),
+    capabilities: toCapabilities(raw.features),
   };
 }
 
@@ -165,9 +187,32 @@ function toLocation(raw: any): DeviceLocation | null {
   return {
     latitude: raw.latitude,
     longitude: raw.longitude,
+    altitude: raw.altitude ?? 0,
     horizontalAccuracy: raw.horizontalAccuracy,
+    verticalAccuracy: raw.verticalAccuracy ?? 0,
     timestamp: new Date(raw.timeStamp),
+    isOld: Boolean(raw.isOld),
     isInaccurate: Boolean(raw.isInaccurate),
     positionType: raw.positionType ?? "Unknown",
+    address: toAddress(raw.addresses),
+  };
+}
+
+function toAddress(addresses: any): string | null {
+  if (!Array.isArray(addresses) || addresses.length === 0) return null;
+  const a = addresses[0];
+  if (a?.mapItemFullAddress) return a.mapItemFullAddress;
+  if (Array.isArray(a?.formattedAddressLines)) return a.formattedAddressLines.join(", ");
+  return null;
+}
+
+function toCapabilities(features: any): DeviceCapabilities {
+  const f = features ?? {};
+  return {
+    canPlaySound: Boolean(f.SND),
+    canMessage: Boolean(f.MSG),
+    canMarkLost: Boolean(f.LST),
+    canLock: Boolean(f.LCK),
+    canErase: Boolean(f.WIP),
   };
 }

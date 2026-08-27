@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { Session } from "./session.js";
 import { SrpClient } from "./srp.js";
+import { Owner } from "./types.js";
 
 const CLIENT_ID = "d39ba9916b7251055b22c7f910e2ea796ee65e98b2ddecea8f5dde8d9d1a815d";
 const AUTH_ENDPOINT = "https://idmsa.apple.com/appleauth/auth";
@@ -22,6 +23,8 @@ export class AuthError extends Error {
 /** An authenticated iCloud session, ready for Find My service calls. */
 export interface AuthResult {
   session: Session;
+  /** The Apple Account holder. */
+  owner: Owner;
   /** Base URL of the Find My web service, e.g. https://p123-fmipweb.icloud.com. */
   findMeUrl: string;
   /** Base URL for account setup calls (used by the erase flow). */
@@ -113,5 +116,15 @@ export async function authenticate(email: string, password: string): Promise<Aut
   });
   if (data.dsInfo?.dsid) params.set("dsid", data.dsInfo.dsid);
 
-  return { session, findMeUrl, setupUrl: SETUP_ENDPOINT, params: params.toString(), dsWebAuthToken };
+  const info = data.dsInfo ?? {};
+  const owner: Owner = {
+    name: info.fullName ?? "",
+    firstName: info.firstName ?? "",
+    lastName: info.lastName ?? "",
+    appleId: info.appleId ?? email,
+    email: info.primaryEmail ?? info.appleId ?? email,
+    countryCode: info.countryCode ?? "",
+  };
+
+  return { session, owner, findMeUrl, setupUrl: SETUP_ENDPOINT, params: params.toString(), dsWebAuthToken };
 }

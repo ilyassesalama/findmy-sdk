@@ -68,6 +68,10 @@ session and later calls request an updated fix.
 Signs in and returns a client. Throws `AuthError` if the credentials are
 rejected or Find My isn't available on the account.
 
+### `fm.owner: Owner`
+
+The Apple Account holder — name, Apple ID, email, and country.
+
 ### `fm.devices(): Promise<Device[]>`
 
 Returns all devices in the account with their latest known locations.
@@ -98,27 +102,56 @@ from the account.
 ### Types
 
 ```ts
+interface Owner {
+  name: string;         // "Alex Rivera"
+  firstName: string;
+  lastName: string;
+  appleId: string;      // usually an email
+  email: string;
+  countryCode: string;  // "US"
+}
+
 interface Device {
   id: string;
   name: string;
   deviceModel: string;      // e.g. "iPhone 15 Pro"
   rawDeviceModel: string;   // e.g. "iPhone16,1"
+  deviceClass: string;      // "iPhone" | "iPad" | "Mac" | "Watch" | "AirPods" | ...
+  ownerName: string;        // account holder, or the family member who owns it
   batteryLevel: number | null; // 0..1
   batteryStatus: "Charging" | "NotCharging" | "Full" | "Unknown";
+  lowPowerMode: boolean;
+  activationLocked: boolean;
   location: DeviceLocation | null;
+  locationEnabled: boolean; // whether the device shares its location
   isLocating: boolean;
   lostModeEnabled: boolean;
+  capabilities: DeviceCapabilities;
+}
+
+interface DeviceCapabilities {
+  canPlaySound: boolean;
+  canMessage: boolean;
+  canMarkLost: boolean;
+  canLock: boolean;
+  canErase: boolean;
 }
 
 interface DeviceLocation {
   latitude: number;
   longitude: number;
+  altitude: number;           // meters (often 0)
   horizontalAccuracy: number; // meters
+  verticalAccuracy: number;   // meters (often 0)
   timestamp: Date;
+  isOld: boolean;             // true if a stale last-known fix, not a fresh one
   isInaccurate: boolean;
   positionType: string;       // e.g. "Wifi" or "GPS"
+  address: string | null;     // reverse-geocoded, when Apple provides one
 }
 ```
+
+The account holder is available as `fm.owner: Owner`.
 
 ## Notes & limitations
 
