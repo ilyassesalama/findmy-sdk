@@ -1,6 +1,6 @@
 {
   "name": "findmy-sdk",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Minimal TypeScript SDK for Apple's Find My network — locate, ring, mark lost, and erase your Apple devices.",
   "type": "module",
   "repository": {
