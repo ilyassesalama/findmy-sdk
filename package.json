@@ -1,0 +1,39 @@
+{
+  "name": "findmy-sdk",
+  "version": "1.0.0",
+  "description": "Minimal TypeScript SDK for Apple's Find My network — locate, ring, mark lost, and erase your Apple devices.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "apple",
+    "icloud",
+    "find-my",
+    "findmy",
+    "location",
+    "device-tracking"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@types/node": "^26.3.0",
+    "typescript": "^5.5.0"
+  }
+}
