@@ -61,6 +61,24 @@ export class FindMy {
     return (data.content ?? []).map(toDevice);
   }
 
+  /**
+   * Continuously yields fresh device snapshots on an interval (default 15s).
+   * The first snapshot is yielded immediately. Stop by `break`ing out of the
+   * loop.
+   *
+   * ```ts
+   * for await (const devices of fm.watch()) {
+   *   console.log(devices[0].location);
+   * }
+   * ```
+   */
+  async *watch(intervalMs = 15_000): AsyncGenerator<Device[]> {
+    while (true) {
+      yield await this.devices();
+      await new Promise((resolve) => setTimeout(resolve, intervalMs));
+    }
+  }
+
   /** Plays a sound on the device to help locate it. */
   async ring(deviceId: string): Promise<void> {
     await this.fmip("playSound", {

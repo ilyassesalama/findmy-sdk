@@ -36,6 +36,12 @@ for (const d of devices) {
   }
 }
 
+// Track locations continuously (fresh fix every 15s by default).
+for await (const snapshot of fm.watch()) {
+  console.log(snapshot[0].location);
+  // break; to stop
+}
+
 // Play a sound to find a device.
 await fm.ring(devices[0].id);
 
@@ -65,6 +71,12 @@ rejected or Find My isn't available on the account.
 ### `fm.devices(): Promise<Device[]>`
 
 Returns all devices in the account with their latest known locations.
+
+### `fm.watch(intervalMs?): AsyncGenerator<Device[]>`
+
+Continuously yields fresh device snapshots on an interval (default `15000` ms).
+The first snapshot is yielded immediately; reuses the same session, so only one
+sign-in happens. Stop by `break`ing out of the `for await` loop.
 
 ### `fm.ring(deviceId): Promise<void>`
 
