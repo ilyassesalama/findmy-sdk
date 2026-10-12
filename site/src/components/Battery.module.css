@@ -1,0 +1,66 @@
+.battery {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-2);
+  --fill: var(--ink);
+}
+
+.battery[data-state="charging"] {
+  --fill: var(--green);
+}
+
+.battery[data-state="low"] {
+  --fill: var(--red);
+}
+
+/* The shell, the charge inside it and the terminal nub. */
+.cell {
+  position: relative;
+  width: 22px;
+  height: 11px;
+  padding: 1.5px;
+  border-radius: 3.5px;
+  box-shadow: inset 0 0 0 1.2px var(--ink-3);
+}
+
+.cell::before {
+  content: "";
+  display: block;
+  width: calc(var(--level) * 100%);
+  height: 100%;
+  border-radius: 2px;
+  background: var(--fill);
+}
+
+/* The bolt sits on the charge, outlined in the surface color so it reads at any level. */
+.bolt {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: var(--ink);
+  stroke: var(--surface);
+  stroke-width: 24;
+  paint-order: stroke;
+  transform: translate(-50%, -50%);
+}
+
+.cell::after {
+  content: "";
+  position: absolute;
+  top: 3.5px;
+  right: -3px;
+  width: 2px;
+  height: 4px;
+  border-radius: 0 1px 1px 0;
+  background: var(--ink-3);
+}
+
+.unknown {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink-3);
+}

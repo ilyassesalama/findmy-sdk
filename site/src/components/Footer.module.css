@@ -1,0 +1,46 @@
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+  font-size: 0.9rem;
+  color: var(--ink-2);
+}
+
+.fine {
+  padding-top: 16px;
+  padding-bottom: calc(36px + env(safe-area-inset-bottom, 0px));
+  font-size: 0.8rem;
+  color: var(--ink-3);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+.links {
+  display: flex;
+  gap: 20px;
+}
+
+.links a {
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .links a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+}

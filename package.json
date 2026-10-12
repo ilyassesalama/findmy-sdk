@@ -7,10 +7,11 @@
     "type": "git",
     "url": "git+https://github.com/ilyassesalama/findmy-sdk.git"
   },
-  "homepage": "https://github.com/ilyassesalama/findmy-sdk#readme",
+  "homepage": "https://findmy.ilyasse.dev",
   "bugs": {
     "url": "https://github.com/ilyassesalama/findmy-sdk/issues"
   },
+  "packageManager": "pnpm@12.9.1",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -25,7 +26,10 @@
   ],
   "scripts": {
     "build": "tsc",
-    "prepublishOnly": "npm run build"
+    "typecheck": "pnpm build && pnpm --filter site typecheck",
+    "dev": "pnpm build && pnpm --filter site dev",
+    "site:build": "pnpm build && pnpm --filter site build",
+    "prepublishOnly": "pnpm build"
   },
   "keywords": [
     "apple",

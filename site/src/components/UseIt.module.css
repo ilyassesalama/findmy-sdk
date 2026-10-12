@@ -1,0 +1,82 @@
+.card {
+  --pad: 18px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 28px;
+  margin-top: 28px;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  gap: 12px;
+}
+
+.step h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.number {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--on-ink);
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.api {
+  margin-top: 40px;
+}
+
+.api h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.api dl {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  margin: 12px 0 0;
+}
+
+.api dl > div {
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+
+.api dt code {
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.api dd {
+  margin: 4px 0 0;
+  font-size: 0.94rem;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+@media (min-width: 900px) {
+  .card {
+    --pad: 22px;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    column-gap: 40px;
+  }
+
+  .api dl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 40px;
+  }
+}

@@ -4,6 +4,10 @@ A minimal, production-ready TypeScript SDK for Apple's **Find My** network. Sign
 in with an Apple ID and password to locate your devices, ring them, put them in
 Lost Mode, or erase them — using Apple's own Find My web endpoints.
 
+**[See it in action →](https://findmy.ilyasse.dev)**
+
+[![The findmy-sdk site: a sample account's devices on a map](https://raw.githubusercontent.com/ilyassesalama/findmy-sdk/main/site/public/og.png)](https://findmy.ilyasse.dev)
+
 - **No two-factor code required.** Uses Apple's lost-device carve-out: device
   locations are reachable with just your Apple ID and password, because the
   device holding your 2FA code might be the one you've lost. This is the same

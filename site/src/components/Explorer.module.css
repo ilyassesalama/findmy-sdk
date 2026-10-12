@@ -1,0 +1,93 @@
+.panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 2px 0 0 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+.data {
+  aspect-ratio: 3 / 2;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+.list {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Rounded to the 36px icon plus the 8px around it, so the two curves stay concentric. */
+.row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding-block: 8px;
+  padding-inline: 8px 14px;
+  border-radius: 26px;
+  text-align: start;
+  transition: background 150ms var(--ease-out);
+}
+
+.row[aria-pressed="true"] {
+  background: var(--well);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .row:not([aria-pressed="true"]):hover {
+    background: color-mix(in srgb, var(--well) 55%, transparent);
+  }
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: var(--well);
+  color: var(--ink-2);
+  transition: background 150ms var(--ease-out), color 150ms var(--ease-out);
+}
+
+.row[aria-pressed="true"] .icon {
+  background: var(--ink);
+  color: var(--on-ink);
+}
+
+.meta {
+  display: grid;
+  min-width: 0;
+}
+
+.name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.sub {
+  font-size: 0.82rem;
+  color: var(--ink-2);
+}
+
+.note {
+  padding: 0 6px 4px;
+  font-size: 0.85rem;
+  color: var(--ink-2);
+}

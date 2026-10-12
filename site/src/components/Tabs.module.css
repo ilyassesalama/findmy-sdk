@@ -1,0 +1,38 @@
+.tabs {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  flex: none;
+  height: 32px;
+  padding: 0 13px;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ink-3);
+  white-space: nowrap;
+  transition: background 150ms var(--ease-out), color 150ms var(--ease-out), scale 150ms var(--ease-out);
+}
+
+.tab[aria-selected="true"] {
+  background: var(--well);
+  color: var(--ink);
+}
+
+.tab:active {
+  scale: 0.96;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tab:hover {
+    color: var(--ink);
+  }
+}

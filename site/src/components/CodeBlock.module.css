@@ -1,0 +1,67 @@
+/* The copy button has its own column, so long lines scroll beside it instead of under it. */
+.block {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  min-width: 0;
+  border-radius: var(--r-inner);
+  background: var(--well);
+}
+
+.code {
+  margin: 0;
+  padding: 16px 8px 16px 18px;
+  overflow-x: auto;
+  font-size: 0.82rem;
+  line-height: 1.75;
+  tab-size: 2;
+  scrollbar-width: thin;
+}
+
+.prompt {
+  color: var(--ink-3);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.copy {
+  margin: 10px 10px 0 0;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  color: var(--ink-3);
+  transition: background 150ms var(--ease-out), color 150ms var(--ease-out), scale 150ms var(--ease-out);
+}
+
+.copy:active {
+  scale: 0.96;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .copy:hover {
+    background: var(--surface);
+    color: var(--ink);
+  }
+}
+
+.keyword {
+  color: var(--pink);
+}
+
+.string {
+  color: var(--green);
+}
+
+.call {
+  color: var(--blue);
+}
+
+.number {
+  color: var(--orange);
+}
+
+.comment {
+  color: var(--ink-3);
+}

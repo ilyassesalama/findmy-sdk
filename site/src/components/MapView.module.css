@@ -1,0 +1,142 @@
+.map {
+  position: relative;
+  container-type: inline-size;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border-radius: var(--r-inner);
+  background: var(--map-land);
+}
+
+.streets,
+.layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.road line {
+  stroke: var(--map-road);
+  stroke-width: 5;
+}
+
+.park {
+  fill: var(--map-park);
+}
+
+.water {
+  fill: var(--map-water);
+}
+
+.pier line {
+  stroke: var(--map-land);
+  stroke-width: 10;
+}
+
+.major {
+  fill: none;
+  stroke: var(--map-major);
+  stroke-width: 15;
+}
+
+.label {
+  fill: var(--map-label);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  dominant-baseline: central;
+}
+
+.bay {
+  fill: var(--blue);
+  opacity: 0.5;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.trail {
+  fill: none;
+  stroke: var(--blue);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.45;
+}
+
+.fix {
+  fill: var(--surface);
+  stroke: var(--blue);
+  stroke-width: 2;
+}
+
+/* A pin and its accuracy halo share a spot, centered on the fix. */
+.spot {
+  position: absolute;
+  width: 0;
+  height: 0;
+  transition: left 700ms var(--ease-out), top 700ms var(--ease-out);
+}
+
+.spot[data-selected="true"] {
+  z-index: 1;
+}
+
+/* --halo is the halo's width as a percentage of the map's, so it is measured in cqw. */
+.halo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(var(--halo) * 1cqw);
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background: var(--blue-bg);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--blue) 30%, transparent);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.pin {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: grid;
+  place-items: center;
+  /* A 44px hit area around a 34px badge. */
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+}
+
+.badge {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 0 0 1px var(--line), 0 4px 12px -4px rgb(0 0 0 / 0.35);
+  transition: transform 200ms var(--ease-out), background 150ms var(--ease-out), color 150ms var(--ease-out);
+}
+
+.spot[data-old="true"] .badge {
+  color: var(--ink-3);
+}
+
+.spot[data-selected="true"] .badge {
+  background: var(--ink);
+  color: var(--on-ink);
+  transform: scale(1.12);
+}
+
+button.pin:active .badge {
+  transform: scale(0.96);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .spot:not([data-selected="true"]) button.pin:hover .badge {
+    transform: scale(1.06);
+  }
+}

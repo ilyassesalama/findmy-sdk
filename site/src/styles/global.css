@@ -1,0 +1,236 @@
+@import "@fontsource/open-runde/400.css";
+@import "@fontsource/open-runde/500.css";
+@import "@fontsource/open-runde/600.css";
+@import "@fontsource/open-runde/700.css";
+
+/*
+ * Shape rule: interactive pills are fully round, tiles use --r-card, wells and code
+ * blocks use --r-inner, and a card holding them rounds to their radius plus its padding.
+ * Color rule: the interface is ink on neutral. Color belongs to the actions, the map
+ * and the code only. Every text color clears 4.5:1 on the surfaces it sits on.
+ */
+:root {
+  --bg: #f6f6f7;
+  --surface: #fdfdfd;
+  --well: #ededf0;
+  --ink: #19191c;
+  --ink-2: #57575f;
+  --ink-3: #6a6a70;
+  --line: #e3e3e7;
+  --on-ink: #fafafa;
+  --shadow: 0 1px 2px rgb(25 25 40 / 0.05), 0 10px 30px -12px rgb(25 25 40 / 0.14);
+
+  --green: #0f7b3e;
+  --green-bg: #dcf5e4;
+  --blue: #1b65c6;
+  --blue-bg: #dceafe;
+  --red: #bf3328;
+  --red-bg: #fde2df;
+  --orange: #9c5a00;
+  --orange-bg: #fdf0d2;
+  --pink: #b63a7c;
+
+  --map-land: #ececef;
+  --map-road: #fdfdfd;
+  --map-major: #ffffff;
+  --map-park: #d9eedb;
+  --map-water: #d3e3f5;
+  --map-label: #9a9aa2;
+
+  --r-card: 22px;
+  --r-inner: 14px;
+  --font: "Open Runde", ui-rounded, "SF Pro Rounded", system-ui, sans-serif;
+  --font-code: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --page: 1120px;
+  --gutter: 20px;
+
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0e11;
+    --surface: #17171b;
+    --well: #212127;
+    --ink: #f2f2f4;
+    --ink-2: #a5a5ad;
+    --ink-3: #898990;
+    --line: #2a2a31;
+    --on-ink: #121215;
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 12px 30px -14px rgb(0 0 0 / 0.6);
+
+    --green: #54d987;
+    --green-bg: rgb(52 199 89 / 0.15);
+    --blue: #6aaeff;
+    --blue-bg: rgb(10 132 255 / 0.17);
+    --red: #ff7468;
+    --red-bg: rgb(255 69 58 / 0.16);
+    --orange: #ffb547;
+    --orange-bg: rgb(255 159 10 / 0.16);
+    --pink: #ff82be;
+
+    --map-land: #1c1c21;
+    --map-road: #2a2a31;
+    --map-major: #383840;
+    --map-park: #1d2a21;
+    --map-water: #15202e;
+    --map-label: #6d6d75;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  min-height: 100svh;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+button,
+a {
+  touch-action: manipulation;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Icons never take the tap; the control around them does. */
+button svg,
+a svg {
+  pointer-events: none;
+  flex: none;
+}
+
+code,
+pre {
+  font-family: var(--font-code);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.page {
+  width: 100%;
+  max-width: calc(var(--page) + var(--gutter) * 2);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.section {
+  padding-block: 56px;
+}
+
+/* Set --pad to change the padding; the corners follow so they stay concentric with the wells inside. */
+.card {
+  padding: var(--pad, 14px);
+  border-radius: calc(var(--r-inner) + var(--pad, 14px));
+  background: var(--surface);
+  box-shadow: var(--shadow), 0 0 0 1px var(--line);
+}
+
+.section-title {
+  font-size: clamp(1.55rem, 3.2vw, 2.1rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+}
+
+.section-lede {
+  margin-top: 10px;
+  max-width: 56ch;
+  font-size: 1.02rem;
+  color: var(--ink-2);
+}
+
+/* Sections fade up the first time they scroll into view (see useReveal). */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out);
+}
+
+.reveal[data-shown="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --gutter: 32px;
+  }
+
+  .section {
+    padding-block: 72px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

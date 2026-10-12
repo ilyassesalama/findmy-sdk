@@ -1,0 +1,109 @@
+.card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.side {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  gap: 12px;
+}
+
+/* On phones the map comes first, so the walk stays in view while the controls sit below it. */
+.card > :last-child {
+  order: -1;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.interval {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-inline-start: 6px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+.toggle {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: var(--well);
+  transition: scale 150ms var(--ease-out), background 150ms var(--ease-out);
+}
+
+.toggle:active {
+  scale: 0.96;
+}
+
+/* The triangle's mass sits left of its box, so it is nudged right to look centered. */
+.play {
+  translate: 1px 0;
+}
+
+.note {
+  padding: 0 4px;
+  font-size: 0.88rem;
+  color: var(--ink-2);
+}
+
+/* Room for every line is kept from the start, so nothing shifts as lines arrive. */
+.output {
+  display: grid;
+  align-content: end;
+  min-height: calc(4 * 1.75 * 0.8rem + 28px);
+  padding: 14px 18px;
+  border-radius: var(--r-inner);
+  background: var(--well);
+  font-family: var(--font-code);
+  font-size: 0.8rem;
+  line-height: 1.75;
+  font-variant-numeric: tabular-nums;
+  white-space: pre;
+  overflow-x: auto;
+  color: var(--ink-3);
+}
+
+.output span:last-child {
+  color: var(--ink);
+  animation: line 400ms var(--ease-out);
+}
+
+@keyframes line {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .toggle:hover {
+    background: var(--line);
+  }
+}
+
+@media (min-width: 900px) {
+  .card {
+    --pad: 18px;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 22px;
+  }
+
+  .card > :last-child {
+    order: 0;
+  }
+}

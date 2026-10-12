@@ -1,0 +1,114 @@
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 32px;
+  padding-top: 20px;
+  padding-bottom: 40px;
+}
+
+.copy {
+  display: grid;
+  align-content: center;
+  gap: 18px;
+}
+
+.title {
+  font-size: clamp(2.5rem, 7.4vw, 4.4rem);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1;
+  max-width: 11ch;
+}
+
+.lede {
+  max-width: 42ch;
+  font-size: 1.1rem;
+  color: var(--ink-2);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 18px;
+  margin-top: 6px;
+}
+
+.install {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  height: 48px;
+  padding: 0 16px 0 20px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--on-ink);
+  transition: scale 150ms var(--ease-out), opacity 150ms var(--ease-out);
+}
+
+.install code {
+  font-size: 0.95rem;
+}
+
+.prompt {
+  opacity: 0.5;
+}
+
+.install:active {
+  scale: 0.96;
+}
+
+.secondary {
+  font-weight: 600;
+  color: var(--ink-2);
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+  transition: color 150ms var(--ease-out), text-decoration-color 150ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .install:hover {
+    opacity: 0.9;
+  }
+
+  .secondary:hover {
+    color: var(--ink);
+    text-decoration-color: var(--ink-3);
+  }
+}
+
+.copy > *,
+.demo {
+  animation: rise 700ms var(--ease-out) both;
+}
+
+.copy > :nth-child(2) {
+  animation-delay: 70ms;
+}
+
+.copy > :nth-child(3) {
+  animation-delay: 140ms;
+}
+
+.demo {
+  animation-delay: 200ms;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+@media (min-width: 900px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.02fr);
+    gap: 56px;
+    align-items: center;
+    padding-top: 48px;
+    padding-bottom: 72px;
+  }
+}
